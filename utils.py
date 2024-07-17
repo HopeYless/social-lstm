@@ -619,7 +619,8 @@ class DataLoader():
 
     def get_directory_name_with_pointer(self, pointer_index):
         # get directory name using pointer index
-        folder_name = self.data_dirs[pointer_index].split('/')[-2]
+        folder_name = self.data_dirs[pointer_index].split('/')[-1]
+        folder_name = folder_name.split('\\')[0]
         return folder_name
 
     def get_all_directory_namelist(self):
@@ -680,7 +681,10 @@ class DataLoader():
         # write a file in txt format
         print("Writing to file  path: %s, file_name: %s"%(path, file_name))
         out = np.concatenate(dataset_seq, axis = 0)
-        np.savetxt(os.path.join(path, file_name), out, fmt = "%1d %1.1f %.3f %.3f", newline='\n')
+        with open (os.path.join(path, file_name), 'w') as f:
+            for line in out:
+                f.write(' '.join([str(int(x)) for x in line]) + '\n')
+        # np.savetxt(os.path.join(path, file_name), out, fmt = "%1d %1.1f %.3f %.3f", newline='\n')
 
     def write_to_plot_file(self, data, path):
         # write plot file for further visualization in pkl format
@@ -689,7 +693,7 @@ class DataLoader():
             file_name = self.get_file_name(file)
             file_name = file_name.split('.')[0] + '.pkl'
             print("Writing to plot file  path: %s, file_name: %s"%(path, file_name))
-            with open(os.path.join(path, file_name), 'wb') as f:
+            with open(os.path.join(path, file_name), 'w+') as f:
                 pickle.dump(data[file], f)
 
     def get_frame_sequence(self, frame_lenght):

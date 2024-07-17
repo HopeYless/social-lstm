@@ -649,43 +649,53 @@ def plot_target_trajs(trajs, plot_directory, num_of_traj, plot_offset):
 
 
 
+import easydict
 
 def main():
 
 
-    parser = argparse.ArgumentParser()
+    # parser = argparse.ArgumentParser()
 
-    # frame rate of video
-    parser.add_argument('--frame', type=int, default=1,
-                        help='Frame of video created from plots')
-    # gru model
-    parser.add_argument('--gru', action="store_true", default=False,
-                        help='Visualization of GRU model')
-    # number of validation dataset
-    parser.add_argument('--num_of_data', type=int, default=3,
-                        help='Number of validation data will be visualized (If 0 is given, will work on test data mode)')
-    # drive support
-    parser.add_argument('--drive', action="store_true", default=False,
-                        help='Use Google drive or not')
-    # minimum lenght of trajectory
-    parser.add_argument('--min_traj', type=int,  default=3,
-                        help='Min. treshold of number of frame to be removed from a sequence')
-    # percentage of peds will be taken for each frame
-    parser.add_argument('--max_ped_ratio', type=float,  default=0.8,
-                        help='Percentage of pedestrian will be illustrated in a plot for a sequence')
-    # maximum ped numbers
-    parser.add_argument('--max_target_ped', type=int,  default=20,
-                        help='Maximum number of peds in final plot')
-    # method to be visualized
-    parser.add_argument('--method', type=int, default=1,
-                        help='Method of lstm will be used (1 = social lstm, 2 = obstacle lstm, 3 = vanilla lstm)')
+    # # frame rate of video
+    # parser.add_argument('--frame', type=int, default=1,
+    #                     help='Frame of video created from plots')
+    # # gru model
+    # parser.add_argument('--gru', action="store_true", default=False,
+    #                     help='Visualization of GRU model')
+    # # number of validation dataset
+    # parser.add_argument('--num_of_data', type=int, default=3,
+    #                     help='Number of validation data will be visualized (If 0 is given, will work on test data mode)')
+    # # drive support
+    # parser.add_argument('--drive', action="store_true", default=False,
+    #                     help='Use Google drive or not')
+    # # minimum lenght of trajectory
+    # parser.add_argument('--min_traj', type=int,  default=3,
+    #                     help='Min. treshold of number of frame to be removed from a sequence')
+    # # percentage of peds will be taken for each frame
+    # parser.add_argument('--max_ped_ratio', type=float,  default=0.8,
+    #                     help='Percentage of pedestrian will be illustrated in a plot for a sequence')
+    # # maximum ped numbers
+    # parser.add_argument('--max_target_ped', type=int,  default=20,
+    #                     help='Maximum number of peds in final plot')
+    # # method to be visualized
+    # parser.add_argument('--method', type=int, default=1,
+    #                     help='Method of lstm will be used (1 = social lstm, 2 = obstacle lstm, 3 = vanilla lstm)')
 
 
     # Parse the parameters
-    args = parser.parse_args()
+    args = easydict.EasyDict({
+            "frame": 1,
+            "gru": False,
+            "num_of_data": 3,
+            "drive": False,
+            "min_traj": 3,
+            "max_ped_ratio": 0.8,
+            "max_target_ped": 20,
+            "method": 1
+            })
 
     prefix = ''
-    f_prefix = '.'
+    f_prefix = ''
     if args.drive is True:
       prefix='drive/semester_project/social_lstm_final/'
       f_prefix = 'drive/semester_project/social_lstm_final'

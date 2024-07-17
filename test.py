@@ -15,45 +15,58 @@ from utils import DataLoader
 from helper import getCoef, sample_gaussian_2d, get_mean_error, get_final_error
 from helper import *
 from grid import getSequenceGridMask, getGridMask
+import easydict
 
 
 def main():
     
-    parser = argparse.ArgumentParser()
-    # Observed length of the trajectory parameter
-    parser.add_argument('--obs_length', type=int, default=8,
-                        help='Observed length of the trajectory')
-    # Predicted length of the trajectory parameter
-    parser.add_argument('--pred_length', type=int, default=12,
-                        help='Predicted length of the trajectory')
+    # parser = argparse.ArgumentParser()
+    # # Observed length of the trajectory parameter
+    # parser.add_argument('--obs_length', type=int, default=8,
+    #                     help='Observed length of the trajectory')
+    # # Predicted length of the trajectory parameter
+    # parser.add_argument('--pred_length', type=int, default=12,
+    #                     help='Predicted length of the trajectory')
     
     
-    # Model to be loaded
-    parser.add_argument('--epoch', type=int, default=14,
-                        help='Epoch of model to be loaded')
-    # cuda support
-    parser.add_argument('--use_cuda', action="store_true", default=False,
-                        help='Use GPU or not')
-    # drive support
-    parser.add_argument('--drive', action="store_true", default=False,
-                        help='Use Google drive or not')
-    # number of iteration -> we are trying many times to get lowest test error derived from observed part and prediction of observed
-    # part.Currently it is useless because we are using direct copy of observed part and no use of prediction.Test error will be 0.
-    parser.add_argument('--iteration', type=int, default=1,
-                        help='Number of iteration to create test file (smallest test errror will be selected)')
-    # gru model
-    parser.add_argument('--gru', action="store_true", default=False,
-                        help='True : GRU cell, False: LSTM cell')
-    # method selection
-    parser.add_argument('--method', type=int, default=1,
-                        help='Method of lstm will be used (1 = social lstm, 2 = obstacle lstm, 3 = vanilla lstm)')
+    # # Model to be loaded
+    # parser.add_argument('--epoch', type=int, default=14,
+    #                     help='Epoch of model to be loaded')
+    # # cuda support
+    # parser.add_argument('--use_cuda', action="store_true", default=False,
+    #                     help='Use GPU or not')
+    # # drive support
+    # parser.add_argument('--drive', action="store_true", default=False,
+    #                     help='Use Google drive or not')
+    # # number of iteration -> we are trying many times to get lowest test error derived from observed part and prediction of observed
+    # # part.Currently it is useless because we are using direct copy of observed part and no use of prediction.Test error will be 0.
+    # parser.add_argument('--iteration', type=int, default=1,
+    #                     help='Number of iteration to create test file (smallest test errror will be selected)')
+    # # gru model
+    # parser.add_argument('--gru', action="store_true", default=False,
+    #                     help='True : GRU cell, False: LSTM cell')
+    # # method selection
+    # parser.add_argument('--method', type=int, default=1,
+    #                     help='Method of lstm will be used (1 = social lstm, 2 = obstacle lstm, 3 = vanilla lstm)')
     
-    # Parse the parameters
-    sample_args = parser.parse_args()
-    
+    # # Parse the parameters
+    # sample_args = parser.parse_args()
+
+    args = easydict.EasyDict({
+        "obs_length": 8,
+        "pred_length": 12,
+        "epoch": 14,
+        "use_cuda": False,
+        "drive": False,
+        "iteration": 1,
+        "gru": False,
+        "method": 1
+        })
+    sample_args = args
+
     #for drive run
     prefix = ''
-    f_prefix = '.'
+    f_prefix = ''
     if sample_args.drive is True:
       prefix='drive/semester_project/social_lstm_final/'
       f_prefix = 'drive/semester_project/social_lstm_final'
@@ -241,8 +254,8 @@ def main():
         #print(submission)
 
     print('Smallest error iteration:', smallest_err_iter_num+1)
-    dataloader.write_to_file(submission_store[smallest_err_iter_num], result_directory, prefix, model_name)
-    dataloader.write_to_plot_file(result_store[smallest_err_iter_num], os.path.join(plot_directory, plot_test_file_directory))
+    # dataloader.write_to_file(submission_store[smallest_err_iter_num], result_directory, prefix, model_name)
+    # dataloader.write_to_plot_file(result_store[smallest_err_iter_num], os.path.join(plot_directory, plot_test_file_directory))
 
 
 def sample(x_seq, Pedlist, args, net, true_x_seq, true_Pedlist, saved_args, dimensions, dataloader, look_up, num_pedlist, is_gru, grid = None):

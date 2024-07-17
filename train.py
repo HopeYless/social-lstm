@@ -240,6 +240,7 @@ def train(args):
 
                 #get processing file name and then get dimensions of file
                 folder_name = dataloader.get_directory_name_with_pointer(d_seq)
+                print(folder_name)
                 dataset_data = dataloader.get_dataset_dimension(folder_name)
 
                 #dense vector creation
@@ -643,7 +644,7 @@ def train(args):
     if validation_dataset_executed:
         dataloader.switch_to_dataset_type(load_data=False)
         create_directories(plot_directory, [plot_train_file_directory])
-        dataloader.write_to_plot_file(all_epoch_results[len(all_epoch_results)-1], os.path.join(plot_directory, plot_train_file_directory))
+        # dataloader.write_to_plot_file(all_epoch_results[len(all_epoch_results)-1], os.path.join(plot_directory, plot_train_file_directory))
 
     # Close logging files
     log_file.close()
