@@ -128,15 +128,16 @@ def train(args):
     validation_dataset_executed = False
   
     prefix = ''
-    f_prefix = '.'
+    f_prefix = ''
     if args.drive is True:
       prefix='drive/semester_project/social_lstm_final/'
       f_prefix = 'drive/semester_project/social_lstm_final'
 
     
     if not os.path.isdir("log/"):
-      print("Directory creation script is running...")
-      subprocess.call([f_prefix+'/make_directories.sh'])
+        print("Directory creation script is running...")
+        subprocess.call([f_prefix+'/make_directories.sh'])
+
 
     args.freq_validation = np.clip(args.freq_validation, 0, args.num_epochs)
     validation_epoch_list = list(range(args.freq_validation, args.num_epochs+1, args.freq_validation))
