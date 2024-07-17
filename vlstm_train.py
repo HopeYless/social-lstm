@@ -13,77 +13,104 @@ from utils import DataLoader
 from helper import *
 
 
+# def main():
+    
+#     parser = argparse.ArgumentParser()
+#     # RNN size parameter (dimension of the output/hidden state)
+#     parser.add_argument('--input_size', type=int, default=2)
+#     parser.add_argument('--output_size', type=int, default=5)
+#     # RNN size parameter (dimension of the output/hidden state)
+#     parser.add_argument('--rnn_size', type=int, default=128,
+#                         help='size of RNN hidden state')
+#     # Size of each batch parameter
+#     parser.add_argument('--batch_size', type=int, default=5,
+#                         help='minibatch size')
+#     # Length of sequence to be considered parameter
+#     parser.add_argument('--seq_length', type=int, default=20,
+#                         help='RNN sequence length')
+#     parser.add_argument('--pred_length', type=int, default=12,
+#                         help='prediction length')
+#     # Number of epochs parameter
+#     parser.add_argument('--num_epochs', type=int, default=50,
+#                         help='number of epochs')
+#     # Frequency at which the model should be saved parameter
+#     parser.add_argument('--save_every', type=int, default=400,
+#                         help='save frequency')
+#     # TODO: (resolve) Clipping gradients for now. No idea whether we should
+#     # Gradient value at which it should be clipped
+#     parser.add_argument('--grad_clip', type=float, default=10.,
+#                         help='clip gradients at this value')
+#     # Learning rate parameter
+#     parser.add_argument('--learning_rate', type=float, default=0.003,
+#                         help='learning rate')
+#     # Decay rate for the learning rate parameter
+#     parser.add_argument('--decay_rate', type=float, default=0.95,
+#                         help='decay rate for rmsprop')
+#     # Dropout not implemented.
+#     # Dropout probability parameter
+#     parser.add_argument('--dropout', type=float, default=0.5,
+#                         help='dropout probability')
+#     # Dimension of the embeddings parameter
+#     parser.add_argument('--embedding_size', type=int, default=64,
+#                         help='Embedding dimension for the spatial coordinates')
+#     # Maximum number of pedestrians to be considered
+#     parser.add_argument('--maxNumPeds', type=int, default=27,
+#                         help='Maximum Number of Pedestrians')
+
+#     # Lambda regularization parameter (L2)
+#     parser.add_argument('--lambda_param', type=float, default=0.0005,
+#                         help='L2 regularization parameter')
+
+#     parser.add_argument('--use_cuda', action="store_true", default=False,
+#                         help='Use GPU or not')
+
+#     parser.add_argument('--gru', action="store_true", default=False,
+#                         help='True : GRU cell, False: LSTM cell')
+    
+#     parser.add_argument('--drive', action="store_true", default=False,
+#                         help='Use Google drive or not')
+
+#     parser.add_argument('--num_validation', type=int, default=3,
+#                         help='Total number of validation dataset for validate accuracy')
+
+#     parser.add_argument('--freq_validation', type=int, default=1,
+#                         help='Frequency number(epoch) of validation using validation data')
+
+#     parser.add_argument('--freq_optimizer', type=int, default=8,
+#                         help='Frequency number(epoch) of learning decay for optimizer')
+
+    
+#     args = parser.parse_args()
+    
+#     train(args)
+
+import easydict
 def main():
-    
-    parser = argparse.ArgumentParser()
-    # RNN size parameter (dimension of the output/hidden state)
-    parser.add_argument('--input_size', type=int, default=2)
-    parser.add_argument('--output_size', type=int, default=5)
-    # RNN size parameter (dimension of the output/hidden state)
-    parser.add_argument('--rnn_size', type=int, default=128,
-                        help='size of RNN hidden state')
-    # Size of each batch parameter
-    parser.add_argument('--batch_size', type=int, default=5,
-                        help='minibatch size')
-    # Length of sequence to be considered parameter
-    parser.add_argument('--seq_length', type=int, default=20,
-                        help='RNN sequence length')
-    parser.add_argument('--pred_length', type=int, default=12,
-                        help='prediction length')
-    # Number of epochs parameter
-    parser.add_argument('--num_epochs', type=int, default=50,
-                        help='number of epochs')
-    # Frequency at which the model should be saved parameter
-    parser.add_argument('--save_every', type=int, default=400,
-                        help='save frequency')
-    # TODO: (resolve) Clipping gradients for now. No idea whether we should
-    # Gradient value at which it should be clipped
-    parser.add_argument('--grad_clip', type=float, default=10.,
-                        help='clip gradients at this value')
-    # Learning rate parameter
-    parser.add_argument('--learning_rate', type=float, default=0.003,
-                        help='learning rate')
-    # Decay rate for the learning rate parameter
-    parser.add_argument('--decay_rate', type=float, default=0.95,
-                        help='decay rate for rmsprop')
-    # Dropout not implemented.
-    # Dropout probability parameter
-    parser.add_argument('--dropout', type=float, default=0.5,
-                        help='dropout probability')
-    # Dimension of the embeddings parameter
-    parser.add_argument('--embedding_size', type=int, default=64,
-                        help='Embedding dimension for the spatial coordinates')
-    # Maximum number of pedestrians to be considered
-    parser.add_argument('--maxNumPeds', type=int, default=27,
-                        help='Maximum Number of Pedestrians')
-
-    # Lambda regularization parameter (L2)
-    parser.add_argument('--lambda_param', type=float, default=0.0005,
-                        help='L2 regularization parameter')
-
-    parser.add_argument('--use_cuda', action="store_true", default=False,
-                        help='Use GPU or not')
-
-    parser.add_argument('--gru', action="store_true", default=False,
-                        help='True : GRU cell, False: LSTM cell')
-    
-    parser.add_argument('--drive', action="store_true", default=False,
-                        help='Use Google drive or not')
-
-    parser.add_argument('--num_validation', type=int, default=3,
-                        help='Total number of validation dataset for validate accuracy')
-
-    parser.add_argument('--freq_validation', type=int, default=1,
-                        help='Frequency number(epoch) of validation using validation data')
-
-    parser.add_argument('--freq_optimizer', type=int, default=8,
-                        help='Frequency number(epoch) of learning decay for optimizer')
-
-    
-    args = parser.parse_args()
-    
+    args = easydict.EasyDict({
+            "input_size": 2,
+            "output_size": 5,
+            "rnn_size": 128,
+            "batch_size": 5,
+            "seq_length": 20,
+            "pred_length": 12,
+            "num_epochs": 30,
+            "save_every": 400,
+            "grad_clip": 10.,
+            "learning_rate": 0.003,
+            "decay_rate": 0.95,
+            "dropout": 0.5,
+            "embedding_size": 64,
+            "neighborhood_size": 32,
+            "grid_size": 4,
+            "maxNumPeds": 27,
+            "lambda_param": 0.0005,
+            "use_cuda": False,
+            "gru": False,
+            "drive": False,
+            "num_validation": 2,
+            "freq_validation": 1,
+            "freq_optimizer": 8})
     train(args)
-
 
 def train(args):
     origin = (0,0)
